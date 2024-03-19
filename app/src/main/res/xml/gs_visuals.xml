@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Shadows (Huge Performance Decrease)">
+        <CheckBoxPreference
+            android:key="gs_shadows"
+            android:title="Enable Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Shadows."/>
+
+        <CheckBoxPreference
+            android:key="gs_shadows_actor"
+            android:title="Enable Actor Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Actor Shadows."/>
+
+        <CheckBoxPreference
+            android:key="gs_shadows_player"
+            android:title="Enable Player Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Player Shadows."/>
+
+        <CheckBoxPreference
+            android:key="gs_shadows_terrain"
+            android:title="Enable Terrain Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Terrain Shadows."/>
+
+        <CheckBoxPreference
+            android:key="gs_shadows_object"
+            android:title="Enable Object Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Object Shadows."/>
+
+        <CheckBoxPreference
+            android:key="gs_shadows_indoor"
+            android:title="Enable Indoor Shadows"
+            android:defaultValue="false"
+            android:summary="Enable Indoor Shadows."/>
+
+        <EditTextPreference
+            android:key="gs_shadow_map_resolution"
+            android:title="Shadow Map Resolution"
+            android:dialogTitle="Shadow Map Resolution"
+            android:inputType="numberDecimal"
+            android:hint="512"
+            android:defaultValue="512"
+            android:summary="How large to make the shadow map(s). Higher values increase GPU load, but can produce better-looking results. Power-of-two values may turn out to be faster on some GPU/driver combinations." />
+
+        <EditTextPreference
+            android:key="gs_shadow_distance"
+            android:title="Shadow Rendering Distance"
+            android:dialogTitle="Shadow Rendering Distance"
+            android:inputType="numberDecimal"
+            android:hint="500"
+            android:defaultValue="3000"
+            android:summary="The distance from the camera at which shadows fade away completely. Set to 0 to make the distance infinite." />
+
+        <EditTextPreference
+            android:key="gs_shadow_maps"
+            android:title="Number of shadow maps"
+            android:dialogTitle="Number of shadow maps"
+            android:inputType="numberDecimal"
+            android:hint="4"
+            android:defaultValue="4"
+            android:summary="Higher number means smoother shadows." />
+
+        <EditTextPreference
+            android:key="gs_shadow_split_point"
+            android:title="Split Point Uniform Logarithmic Ratio"
+            android:dialogTitle="Split Point Uniform Logarithmic Ratio"
+            android:inputType="numberDecimal"
+            android:hint="0.5"
+            android:defaultValue="0.5"
+            android:summary="Indirectly controls where to split the shadow map(s). Values closer to 1.0 bring more detail closer to the camera (potentially excessively so), and values closer to 0.0 spread it more evenly across the whole viewing distance. 0.5 is recommended for most viewing distances by the original Parallel Split Shadow Maps paper." />
+
+        <EditTextPreference
+            android:key="gs_shadow_pcf"
+            android:title="Percentage Closer Filtering"
+            android:dialogTitle="Percentage Closer Filtering"
+            android:inputType="numberDecimal"
+            android:hint="1"
+            android:defaultValue="1"
+            android:summary="Smooth out shadows edges, 0 = disabled, 1 = 4 samples, 2 = 2*2*4 samples, 3 = 3*3*4 samples and so on." />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Terrain">
+
+        <EditTextPreference
+            android:key="gs_object_paging_min_size"
+            android:title="Object Paging Min Size"
+            android:dialogTitle="Object Paging Min Size"
+            android:inputType="numberDecimal"
+            android:hint="0.010"
+            android:defaultValue="0.010"
+            android:summary="Controls how large an object must be to be visible in the scene. The object’s size is divided by its distance to the camera and the result of the division is compared with this value. The smaller this value is, the more objects you will see in the scene."/>
+
+        <CheckBoxPreference
+            android:key="gs_distant_land"
+            android:title="Distant Land"
+            android:summary="If true, use paging and LOD algorithms to display the entire terrain. If false, only display terrain of the loaded cells."/>
+
+        <CheckBoxPreference
+            android:key="gs_active_grid_object_paging"
+            android:title="Active Grid Object Paging"
+            android:defaultValue="true"
+            android:summary="Use object paging for active cells grid."/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Graphics">
+
+        <EditTextPreference
+            android:key="gs_framerate_limit"
+            android:title="Framerate Limit"
+            android:dialogTitle="Framerate Limit"
+            android:inputType="numberDecimal"
+            android:hint="60"
+            android:defaultValue="60"
+            android:summary="Maximum rendering framerate."/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Shaders">
+
+        <CheckBoxPreference
+            android:key="gs_auto_use_object_normal_maps"
+            android:title="Auto Use Objects Normal Maps"
+            android:summary="If this option is enabled, normal maps are automatically recognized and used if they are named appropriately (see 'normal map pattern', e.g. for a base texture foo.dds, the normal map texture would have to be named foo_n.dds). If this option is disabled, normal maps are only used if they are explicitly listed within the mesh file (.nif or .osg file). Affects objects"/>
+
+        <CheckBoxPreference
+            android:key="gs_auto_use_object_specular_maps"
+            android:title="Auto Use Objects Specular Maps"
+            android:summary="If this option is enabled, specular maps are automatically recognized and used if they are named appropriately (see 'specular map pattern', e.g. for a base texture foo.dds, the specular map texture would have to be named foo_spec.dds). If this option is disabled, normal maps are only used if they are explicitly listed within the mesh file (.osg file, not supported in .nif files). Affects objects."/>
+
+        <CheckBoxPreference
+            android:key="gs_auto_use_terrain_normal_maps"
+            android:title="Auto Use Terrain Normal Maps"
+            android:summary="See 'auto use object normal maps'. Affects terrain."/>
+
+        <CheckBoxPreference
+            android:key="gs_auto_use_terrain_specular_maps"
+            android:title="Auto Use Terrain Specular Maps"
+            android:summary="If a file with pattern 'terrain specular map pattern' exists, use that file as a 'diffuse specular' map. The texture must contain the layer colour in the RGB channel (as usual), and a specular multiplier in the alpha channel."/>
+
+        <CheckBoxPreference
+            android:key="gs_bump_map_local_lighting"
+            android:title="Bump/Reflect Map Local Lighting"
+            android:summary="Normally environment map reflections aren't affected by lighting, which makes environment-mapped (and thus bump-mapped objects) glow in the dark. Morrowind Code Patch includes an option to remedy that by doing environment-mapping before applying lighting, this is the equivalent of that option. Affected objects will use shaders."/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Fog">
+
+        <CheckBoxPreference
+            android:key="gs_radial_fog"
+            android:title="Radial Fog"
+            android:summary="By default, the fog becomes thicker proportionally to your distance from the clipping plane set at the clipping distance, which causes distortion at the edges of the screen. This setting makes the fog use the actual eye point distance (or so called Euclidean distance) to calculate the fog, which makes the fog look less artificial, especially if you have a wide FOV."/>
+
+        <CheckBoxPreference
+            android:key="gs_exponential_fog"
+            android:title="Exponential Fog"
+            android:summary="Whether to use exponential formula for fog."/>
+
+        <CheckBoxPreference
+            android:key="gs_sky_blending"
+            android:title="Sky Blending"
+            android:summary="Whether to hide the clipping plane by blending with sky."/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
