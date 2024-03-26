@@ -92,33 +92,44 @@ class FragmentSettings : PreferenceFragment(), OnSharedPreferenceChangeListener 
             }
         }
 
-        findPreference("game_files").setOnPreferenceClickListener {
-            if (ContextCompat.checkSelfPermission(activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                showError(R.string.permissions_error_title, R.string.permissions_error_message)
-            } else {
-                // Use ACTION_OPEN_DOCUMENT_TREE intent to allow the user to choose a directory
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                startActivityForResult(intent, REQUEST_CODE_OPEN_DOCUMENT_TREE)
-            }
+        0
+
+
+I changed the first part to
+
+findPreference("game_files").setOnPreferenceClickListener {
+            // Use ACTION_OPEN_DOCUMENT_TREE intent to allow the user to choose a directory
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+            startActivityForResult(intent, REQUEST_CODE_OPEN_DOCUMENT_TREE)
             true
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_OPEN_DOCUMENT_TREE && resultCode == Activity.RESULT_OK) {
-            data?.data?.also { uri ->
-                // Persist access permissions for the selected directory using takePersistableUriPermission
-                activity.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == REQUEST_CODE_OPEN_DOCUMENT_TREE && resultCode == Activity.RESULT_OK) {
+        data?.data?.also { uri ->
 
-                // Use the selected directory URI to perform operations
-                val selectedDirectory = DocumentFile.fromTreeUri(activity, uri)
-                val path = selectedDirectory?.uri?.path ?: ""
-                setupData(path)
+            val selectedDirectory = DocumentFile.fromTreeUri(activity, uri) ?: return
+            val iniFile = selectedDirectory.findFile("Morrowind.ini")
+            val dataFilesFolder = selectedDirectory.findFile("Data Files")
+            val sharedPref = preferenceScreen.sharedPreferences
+
+
+            if (iniFile != null && dataFilesFolder != null && dataFilesFolder.isDirectory) {
+                val gameFilesPreference = findPreference("game_files")
+                val path = uri.toString() // Convert Uri to String path
+                gameFilesPreference?.summary = path
+                with(sharedPref.edit()) {
+                    var gameFiles = path
+                    putString("game_files", gameFiles)
+                    apply()
+                }
+            } else {
+                showError(R.string.data_error_title, R.string.data_error_message)
             }
         }
     }
+}
 
 
     /**
